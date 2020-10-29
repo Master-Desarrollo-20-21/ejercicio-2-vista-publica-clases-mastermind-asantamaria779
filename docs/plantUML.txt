@@ -1,0 +1,86 @@
+@startuml
+class Mastermind {
+  -Round round
+  +void play()
+  +{static} void main
+  -boolean continue()
+}
+
+class Round {
+  -final int MAX_ATTEMPS = 10
+  -Result result
+  -Player player
+  -Display display
+  +Round()
+  +start()
+  -boolean maxNumberAttempsReached()
+}
+
+class Display {
+  +Display()
+  +void showTitle()
+  +void showWinnerMessage()
+  +void showFailMessage()
+  +void showContinueMessage()
+  +void show(String message)
+}
+
+class Result {
+  -Combination secretCombination
+  -Display display
+  -Attempt[] attemps
+  +Result(Display display)
+  +void saveAttemp(Combination combination)
+  +void showAttemps()
+  +boolean isWinner(Combination combination)
+}
+
+class Attempt {
+  -int numberOfWhites
+  -int numberOfBlacks
+  +Attempt()
+  +int getNumberOfWhites()
+  +int getNumberOfBlacks()
+}
+
+class Player {
+  -Display display
+  +Player(Display display)
+  +Combination proposeCombination()
+}
+
+class Combination {
+  -int final {static} LENGTH = 4
+  +boolean {static} isLengthValid(String combination)
+  +boolean {static} AreColoursValid(String combination)
+  -String combination;
+  +Combination(String combination)
+  +Combination()
+  -void make()
+  +boolean isEqual(Combination combination)
+  +int numCoincidencesInColourAndPosition(Combination combination)
+  +int numCoincidencesInColourOnly(Combination combination)
+  +String Encode()
+}
+
+enum Colours {
+   RED='r'
+   BLUE='b'       
+   YELLOW='y'
+   GREEN='g'
+   ORANGE='o'
+   PINK='p'
+}
+
+Mastermind *-down- Round
+Round *-down- Result
+Round *-down- Display
+Round *-down- Player
+Player -right-> Display
+Result -left-> Display
+Display -[hidden]> Combination
+Result *-down-> Combination
+Result *-down-> "0..10" Attempt
+Combination -left-> Colours
+Player -> Combination
+@enduml
