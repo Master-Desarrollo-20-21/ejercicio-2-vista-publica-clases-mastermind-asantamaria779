@@ -1,0 +1,63 @@
+@startuml
+class Mastermind {
+  +{static} void main
+  -void play()
+  -boolean resume()
+}
+
+class Round {
+  -final int MAX_ATTEMPS = 10
+  -Combination secretCombination
+  -int numberOfAttemps
+  -Result[] results
+  +Round()
+  +void play()
+  -void showStateOfRound()
+  -Result calculateResult(Combination proposedCombination)
+  -boolean isWinner(Result result)
+  -Combination proposeCombination()
+}
+
+class Result {
+  -Combination proposedCombination
+  -int numberOfWhites
+  -int numberOfBlacks
+  +Result(Combination proposedCombination,int numberOfBlacks,int numberOfWhites)
+  +void show()
+}
+
+class Combination {
+  -{static} final int COMBINATION_LENGTH = 4
+  -String combination;
+  +{static} boolean isValidLength(String proposeCombination)
+  +{static} boolean AreValidColours(String proposeCombination)
+  -{static} String validColours()
+  -{static} String makeRandom()
+  +Combination(String combination)
+  +Combination()
+  +int length()
+  +int numberCoincidencesInColourAndPosition(Combination proposedCombination)
+  +int numberCoincidencesInColourOnly(Combination proposedCombination)
+  +void showEncode()
+  +void show()
+}
+
+enum Colours {
+  {static} final RED('r')
+  {static} final BLUE('b')     
+  {static} final YELLOW('y')
+  {static} final GREEN('g')
+  {static} final ORANGE('o')
+  {static} final PINK('p')
+  -char colour
+  -Colour(char colour)
+  +{static} boolean isValid(char colour)
+  +{static} String validColours()
+}
+
+Mastermind *-down- Round
+Round *-down- Combination
+Round *-down- "0..10" Result
+Result *-down- Combination
+Combination -down-> Colours
+@enduml
